@@ -6,7 +6,7 @@ The necessary configuration for Elastic Search is in the docker-compose file.
 
 ## Usage
 
-Run fluentd + elastic search + kibana
+### 1. Run fluentd + elastic search + kibana
 
 ```
 docker-compose up -d
@@ -20,6 +20,11 @@ the logger will try to connect to fluentd on `localhost`.
 You can customize the `FLUENTD_HOST` and `FLUENTD_PORT` environment variables to point to your docker-machine IP.
 
 For instance, on my mac, I run the application with `FLUENTD_HOST=192.168.99.100`.
+
+### 2. Run ./gradlew bootRun
+
+This step will start the springboot application, it will produce random logs and put them to the elasticsearch.
+We can view the logs in Kibana.
 
 ## Principle
 
