@@ -1,33 +1,28 @@
 # fluentd-boot
 
-Spring boot logs redirected to Elastic Search via fluentd.
+通过fluentd将SpringBoot应用的日志发送到Elastic Search。
 
-The necessary configuration for Elastic Search is in the docker-compose file. 
+Elastic Search 的配置在 docker-compose 文件中。 
 
-## Usage
+## 用法
 
-### 1. Run fluentd + elastic search + kibana
+### 1. 启动 fluentd + elastic search + kibana
 
 ```
 docker-compose up -d
 ```
 
-Then go to `http://${DOCKER_HOST}:5601` (ie, `http://localhost:5601` or your docker machine ip) to see the Kibana dashboard.
+在浏览器中打开`http://localhost:5601`可以看到Kibana dashboard的页面。
 
-Run the application with your IDE. If neither `FLUENTD_HOST` nor `DOCKER_HOST` variable are set,
-the logger will try to connect to fluentd on `localhost`.
+### 2. 执行 ./gradlew bootRun
 
-You can customize the `FLUENTD_HOST` and `FLUENTD_PORT` environment variables to point to your docker-machine IP.
+这步会启动SpringBoot的应用，该应用会随机的产生日志信息，并将日志发送到Elastic Search。
+可以在Kibana中查看日志内容。
 
-For instance, on my mac, I run the application with `FLUENTD_HOST=192.168.99.100`.
+通过在环境变量中配置`FLUENTD_HOST` 和 `FLUENTD_PORT`，可以指定docker容器的地址和端口，如果没有指定，日志会默认发送到localhost，在此种情况下，SpringBoot应用和docker容器应该是运行在同一台机器上。
 
-### 2. Run ./gradlew bootRun
+## 原理
 
-This step will start the springboot application, it will produce random logs and put them to the elasticsearch.
-We can view the logs in Kibana.
+应用通过一个logback appender将日志发送到fluentd。
 
-## Principle
-
-Uses a logback appender to redirect logs to fluentd.
-
-See `src/main/resources/logback.xml` for more information.
+logback的配置在 `src/main/resources/logback.xml` 中。
